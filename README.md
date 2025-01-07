@@ -5,10 +5,10 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 ---
 
 ## 🗂 Table of Contents
+
 - [Overview](#overview)
 - [Features](#features)
 - [Folder Structure](#folder-structure)
-- [Setup and Installation](#setup-and-installation)
 - [Usage](#usage)
 - [Modules](#modules)
   - [Preprocessing](#preprocessingpy)
@@ -21,7 +21,9 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 ---
 
 ## 📝 Overview
+
 This pipeline preprocesses a dataset of reviews and prepares it for analysis or modeling. Key features include:
+
 - Text preprocessing (e.g., contraction expansion, tokenization, lemmatization).
 - Feature extraction via TF-IDF vectorization.
 - Modularized components for maintainability and scalability.
@@ -29,6 +31,7 @@ This pipeline preprocesses a dataset of reviews and prepares it for analysis or 
 ---
 
 ## ✨ Features
+
 - **Clean and Normalize Text**: Includes expansion of contractions, removal of punctuation and digits, tokenization, and lemmatization.
 - **TF-IDF Feature Extraction**: Converts text into numerical features using unigrams and bigrams.
 - **Scalable Design**: Modular architecture to extend and customize the pipeline for different use cases.
@@ -36,41 +39,18 @@ This pipeline preprocesses a dataset of reviews and prepares it for analysis or 
 ---
 
 ## 📁 Folder Structure
+
+The project directory is organized as follows:
+
 ```plaintext
 project/
-├── preprocessing.py       # Text preprocessing functions
-├── vectorization.py       # TF-IDF vectorization logic
-├── main.py                # Main script to run the pipeline
-├── data/                  # Directory for input datasets
-├── output/                # Directory to save processed datasets
-└── README.md              # Project documentation
+├── preprocessing.py       # Functions for text preprocessing (cleaning, lemmatization, etc.)
+├── vectorization.py       # TF-IDF vectorization logic for feature extraction
+├── main.py                # Main script to run the entire pipeline
+├── data/                  # Folder to store input datasets (e.g., CSV files with reviews)
+├── output/                # Folder to store the processed datasets and results
+└── README.md              # Project documentation (this file)
 ```
-
----
-
-## ⚙️ Setup and Installation
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-repo/fake-review-detection.git
-   cd fake-review-detection
-   ```
-
-2. **Install Dependencies**:
-   Ensure Python 3.8+ is installed, then install required libraries:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Install NLTK Dependencies**:
-   The script handles NLTK downloads automatically, but you can also install them manually:
-   ```python
-   import nltk
-   nltk.download('punkt')
-   nltk.download('wordnet')
-   nltk.download('stopwords')
-   nltk.download('omw-1.4')
-   ```
 
 ---
 
@@ -82,6 +62,7 @@ project/
 
 2. **Run the Pipeline**:
    Execute the pipeline by running:
+
    ```bash
    python main.py
    ```
@@ -94,14 +75,18 @@ project/
 ## 📦 Modules
 
 ### **1. Preprocessing (`preprocessing.py`)**
+
 Handles text cleaning and normalization:
+
 - Expands contractions (e.g., "can't" → "cannot").
 - Converts text to lowercase.
 - Removes punctuation and digits.
 - Tokenizes, removes stopwords, and applies lemmatization.
 
 ### **2. Vectorization (`vectorization.py`)**
+
 Extracts features from preprocessed text:
+
 - Uses TF-IDF vectorization to convert text into numerical data.
 - Configurable parameters include:
   - Maximum features (`max_features`).
@@ -109,7 +94,9 @@ Extracts features from preprocessed text:
   - Frequency thresholds (`max_df`, `min_df`).
 
 ### **3. Main Script (`main.py`)**
+
 Orchestrates the workflow:
+
 - Loads the dataset.
 - Applies preprocessing and vectorization.
 - Saves the final dataset to the output folder.
@@ -117,37 +104,10 @@ Orchestrates the workflow:
 ---
 
 ## 🛠️ Future Enhancements
+
 - Add support for advanced vectorization techniques (e.g., Word2Vec, BERT).
 - Enable custom stopword lists.
 - Integrate end-to-end machine learning models for review classification.
 - Implement detailed logging and error tracking.
 
 ---
-
-## 🤝 Contributing
-We welcome contributions to enhance this project! To contribute:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m "Add feature"`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a Pull Request.
-
----
-
-## 📄 License
-This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute this project.
-
----
-
-### 🔗 Connect With Us
-Have questions or suggestions? Feel free to [open an issue](https://github.com/your-repo/fake-review-detection/issues).
-
----
-```
-
-### Key Highlights:
-- Added **emojis** for better readability and GitHub styling.
-- Included **usage instructions**, **features**, and **contributing guidelines**.
-- Structured sections for easy navigation via GitHub’s markdown table of contents.
-
-Feel free to customize the repository links or add specific details about contributors!
