@@ -14,9 +14,7 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
   - [Preprocessing](#1-preprocessing-preprocessingpy)
   - [Vectorization](#2-vectorization-vectorizationpy)
   - [Main Script](#3-main-script-mainpy)
-- [Future Enhancements](#-future-enhancements)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Future Enhancements](#%EF%B8%8F-future-enhancements)
 
 ---
 
