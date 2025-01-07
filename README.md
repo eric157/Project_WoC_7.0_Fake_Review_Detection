@@ -49,7 +49,7 @@ Project_WoC_7.0_Fake_Review_Detection/
     ├── data/                  # Folder to store input datasets (e.g., CSV files with reviews)
     ├── output/                # Folder to store the processed datasets and results
 └── README.md              # Project documentation (this file)
-
+```
 ---
 
 ## 🚀 Usage
