@@ -5,14 +5,15 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 ---
 
 ## 🗂 Table of Contents
+
 - [Overview](#overview)
 - [Features](#features)
 - [Folder Structure](#folder-structure)
 - [Usage](#usage)
 - [Modules](#modules)
-  - [Preprocessing](#preprocessingpy)
-  - [Vectorization](#vectorizationpy)
-  - [Main Script](#mainpy)
+  - [Preprocessing](#preprocessing-preprocessingpy)
+  - [Vectorization](#vectorization-vectorizationpy)
+  - [Main Script](#main-script-mainpy)
 - [Future Enhancements](#future-enhancements)
 - [Contributing](#contributing)
 - [License](#license)
@@ -20,7 +21,9 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 ---
 
 ## 📝 Overview
+
 This pipeline preprocesses a dataset of reviews and prepares it for analysis or modeling. Key features include:
+
 - Text preprocessing (e.g., contraction expansion, tokenization, lemmatization).
 - Feature extraction via TF-IDF vectorization.
 - Modularized components for maintainability and scalability.
@@ -28,6 +31,7 @@ This pipeline preprocesses a dataset of reviews and prepares it for analysis or 
 ---
 
 ## ✨ Features
+
 - **Clean and Normalize Text**: Includes expansion of contractions, removal of punctuation and digits, tokenization, and lemmatization.
 - **TF-IDF Feature Extraction**: Converts text into numerical features using unigrams and bigrams.
 - **Scalable Design**: Modular architecture to extend and customize the pipeline for different use cases.
@@ -35,6 +39,7 @@ This pipeline preprocesses a dataset of reviews and prepares it for analysis or 
 ---
 
 ## 📁 Folder Structure
+
 The project directory is organized as follows:
 
 ```plaintext
@@ -47,17 +52,17 @@ Project_WoC_7.0_Fake_Review_Detection/
     ├── output/                # Folder to store the processed datasets and results
     └── README.md              # Project documentation (this file)
 ```
-
 ---
 
 ## 🚀 Usage
 
 1. **Prepare the Input Dataset**:
    - Place your dataset in the `data/` folder.
-   - Ensure the file is a CSV with a text column named `text_` (or update `TEXT_COLUMN` in `main.py`).
+   - Ensure the file is a CSV with a text column named `text` (or update `TEXT_COLUMN` in `main.py`).
 
 2. **Run the Pipeline**:
    Execute the pipeline by running:
+
    ```bash
    python checkpoint_1/main.py
    ```
@@ -70,14 +75,18 @@ Project_WoC_7.0_Fake_Review_Detection/
 ## 📦 Modules
 
 ### **1. Preprocessing (`preprocessing.py`)**
+
 Handles text cleaning and normalization:
+
 - Expands contractions (e.g., "can't" → "cannot").
 - Converts text to lowercase.
 - Removes punctuation and digits.
 - Tokenizes, removes stopwords, and applies lemmatization.
 
 ### **2. Vectorization (`vectorization.py`)**
+
 Extracts features from preprocessed text:
+
 - Uses TF-IDF vectorization to convert text into numerical data.
 - Configurable parameters include:
   - Maximum features (`max_features`).
@@ -85,7 +94,9 @@ Extracts features from preprocessed text:
   - Frequency thresholds (`max_df`, `min_df`).
 
 ### **3. Main Script (`main.py`)**
+
 Orchestrates the workflow:
+
 - Loads the dataset.
 - Applies preprocessing and vectorization.
 - Saves the final dataset to the output folder.
@@ -93,6 +104,7 @@ Orchestrates the workflow:
 ---
 
 ## 🛠️ Future Enhancements
+
 - Add support for advanced vectorization techniques (e.g., Word2Vec, BERT).
 - Enable custom stopword lists.
 - Integrate end-to-end machine learning models for review classification.
