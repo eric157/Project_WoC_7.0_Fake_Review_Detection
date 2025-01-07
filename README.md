@@ -5,22 +5,23 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 ---
 
 ## 🗂 Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Folder Structure](#folder-structure)
-- [Usage](#usage)
-- [Modules](#modules)
-  - [Preprocessing](#preprocessingpy)
-  - [Vectorization](#vectorizationpy)
-  - [Main Script](#mainpy)
-- [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Folder Structure](#-folder-structure)
+- [Usage](#-usage)
+- [Modules](#-modules)
+  - [Preprocessing](#1-preprocessing-preprocessingpy)
+  - [Vectorization](#2-vectorization-vectorizationpy)
+  - [Main Script](#3-main-script-mainpy)
+- [Future Enhancements](#%EF%B8%8F-future-enhancements)
 
 ---
 
 ## 📝 Overview
+
 This pipeline preprocesses a dataset of reviews and prepares it for analysis or modeling. Key features include:
+
 - Text preprocessing (e.g., contraction expansion, tokenization, lemmatization).
 - Feature extraction via TF-IDF vectorization.
 - Modularized components for maintainability and scalability.
@@ -28,6 +29,7 @@ This pipeline preprocesses a dataset of reviews and prepares it for analysis or 
 ---
 
 ## ✨ Features
+
 - **Clean and Normalize Text**: Includes expansion of contractions, removal of punctuation and digits, tokenization, and lemmatization.
 - **TF-IDF Feature Extraction**: Converts text into numerical features using unigrams and bigrams.
 - **Scalable Design**: Modular architecture to extend and customize the pipeline for different use cases.
@@ -35,6 +37,7 @@ This pipeline preprocesses a dataset of reviews and prepares it for analysis or 
 ---
 
 ## 📁 Folder Structure
+
 The project directory is organized as follows:
 
 ```plaintext
@@ -47,17 +50,17 @@ Project_WoC_7.0_Fake_Review_Detection/
     ├── output/                # Folder to store the processed datasets and results
     └── README.md              # Project documentation (this file)
 ```
-
 ---
 
 ## 🚀 Usage
 
 1. **Prepare the Input Dataset**:
    - Place your dataset in the `data/` folder.
-   - Ensure the file is a CSV with a text column named `text_` (or update `TEXT_COLUMN` in `main.py`).
+   - Ensure the file is a CSV with a text column named `text` (or update `TEXT_COLUMN` in `main.py`).
 
 2. **Run the Pipeline**:
    Execute the pipeline by running:
+
    ```bash
    python checkpoint_1/main.py
    ```
@@ -70,14 +73,18 @@ Project_WoC_7.0_Fake_Review_Detection/
 ## 📦 Modules
 
 ### **1. Preprocessing (`preprocessing.py`)**
+
 Handles text cleaning and normalization:
+
 - Expands contractions (e.g., "can't" → "cannot").
 - Converts text to lowercase.
 - Removes punctuation and digits.
 - Tokenizes, removes stopwords, and applies lemmatization.
 
 ### **2. Vectorization (`vectorization.py`)**
+
 Extracts features from preprocessed text:
+
 - Uses TF-IDF vectorization to convert text into numerical data.
 - Configurable parameters include:
   - Maximum features (`max_features`).
@@ -85,7 +92,9 @@ Extracts features from preprocessed text:
   - Frequency thresholds (`max_df`, `min_df`).
 
 ### **3. Main Script (`main.py`)**
+
 Orchestrates the workflow:
+
 - Loads the dataset.
 - Applies preprocessing and vectorization.
 - Saves the final dataset to the output folder.
@@ -93,9 +102,31 @@ Orchestrates the workflow:
 ---
 
 ## 🛠️ Future Enhancements
-- Add support for advanced vectorization techniques (e.g., Word2Vec, BERT).
-- Enable custom stopword lists.
-- Integrate end-to-end machine learning models for review classification.
-- Implement detailed logging and error tracking.
 
----
+As the Fake Review Detection project evolves, the following enhancements are planned to improve the system’s performance and capabilities:
+
+1. **Support for Advanced Vectorization Techniques**:
+   - Implement more sophisticated text representations such as **Word2Vec** and **BERT** to capture deeper semantic meanings and improve model accuracy.
+   
+2. **Custom Stopword Lists**:
+   - Allow users to integrate and define their own stopword lists to better suit specific datasets or industries (e.g., e-commerce reviews, product-specific jargon).
+   
+3. **Integration of End-to-End Machine Learning Models**:
+   - Develop and integrate machine learning models that can not only detect fake reviews but also classify the reviews as **critical** or **non-critical**, using models like:
+     - **Random Forest Classifier**
+     - **Support Vector Classifier (SVC)**
+     - **Logistic Regression**
+   
+4. **Model Deployment and Web Scraping Enhancements**:
+   - Further enhance the **web scraping** capabilities to handle dynamic content and more e-commerce platforms, expanding the project’s reach.
+   - Continue to fine-tune model performance with cross-validation and feature engineering.
+
+5. **Error Logging and Detailed Tracking**:
+   - Implement comprehensive **logging** and **error tracking** systems to ensure that the pipeline can be debugged easily in case of issues, and monitor progress through tools like **Flask** for deployed models.
+
+6. **User Interface Improvements**:
+   - Build a more interactive **frontend** to allow users to submit product URLs directly and view the classification results in a user-friendly manner.
+
+7. **Model Performance Monitoring**:
+   - Incorporate performance metrics and feedback loops that allow the system to automatically retrain and adjust models based on incoming new review data.
+--
