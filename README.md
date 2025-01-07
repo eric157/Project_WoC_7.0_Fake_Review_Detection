@@ -6,17 +6,17 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 
 ## 🗂 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Folder Structure](#folder-structure)
-- [Usage](#usage)
-- [Modules](#modules)
-  - [Preprocessing](#preprocessing-preprocessingpy)
-  - [Vectorization](#vectorization-vectorizationpy)
-  - [Main Script](#main-script-mainpy)
-- [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Folder Structure](#-folder-structure)
+- [Usage](#-usage)
+- [Modules](#-modules)
+  - [Preprocessing](#-preprocessing-preprocessingpy)
+  - [Vectorization](#-vectorization-vectorizationpy)
+  - [Main Script](#-main-script-mainpy)
+- [Future Enhancements](#-future-enhancements)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
