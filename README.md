@@ -48,8 +48,8 @@ Project_WoC_7.0_Fake_Review_Detection/
     ├── main.py                # Main script to run the entire pipeline
     ├── data/                  # Folder to store input datasets (e.g., CSV files with reviews)
     ├── output/                # Folder to store the processed datasets and results
-    └── README.md              # Project documentation (this file)
-```
+└── README.md              # Project documentation (this file)
+
 ---
 
 ## 🚀 Usage
@@ -107,16 +107,13 @@ As the Fake Review Detection project evolves, the following enhancements are pla
 
 1. **Support for Advanced Vectorization Techniques**:
    - Implement more sophisticated text representations such as **Word2Vec** and **BERT** to capture deeper semantic meanings and improve model accuracy.
-   
 2. **Custom Stopword Lists**:
    - Allow users to integrate and define their own stopword lists to better suit specific datasets or industries (e.g., e-commerce reviews, product-specific jargon).
-   
 3. **Integration of End-to-End Machine Learning Models**:
    - Develop and integrate machine learning models that can not only detect fake reviews but also classify the reviews as **critical** or **non-critical**, using models like:
      - **Random Forest Classifier**
      - **Support Vector Classifier (SVC)**
      - **Logistic Regression**
-   
 4. **Model Deployment and Web Scraping Enhancements**:
    - Further enhance the **web scraping** capabilities to handle dynamic content and more e-commerce platforms, expanding the project’s reach.
    - Continue to fine-tune model performance with cross-validation and feature engineering.
