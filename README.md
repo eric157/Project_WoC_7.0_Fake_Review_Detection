@@ -10,7 +10,7 @@ A comprehensive pipeline for text data preprocessing, feature extraction, model 
 - [Features](#-features)
 - [Folder Structure](#-folder-structure)
 - [Usage](#-usage)
-- [Checkpoint 1](#-checkpoint-1)
+- [Checkpoint 1](#checkpoint-1-1)
 - [Checkpoint 2](#-checkpoint-2)
 - [Modules](#-modules)
   - [Checkpoint 1 Modules](#-checkpoint-1-modules)
