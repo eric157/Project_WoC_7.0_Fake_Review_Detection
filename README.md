@@ -1,72 +1,92 @@
-# 🤖 Fake Review Detection Pipeline
+🤖 Fake Review Detection Pipeline
 
 A comprehensive pipeline for text data preprocessing, feature extraction, model training, and evaluation, culminating in the selection of the best-performing model for fake review detection. This project leverages advanced techniques from natural language processing (NLP) and machine learning (ML).
 
----
+🗂 Table of Contents
 
-## 🗂 Table of Contents
+Overview
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Folder Structure](#-folder-structure)
-- [Usage](#-usage)
-  - [Checkpoint 1](#checkpoint-1)
-  - [Checkpoint 2](#checkpoint-2)
-- [Modules](#-modules)
-  - [Checkpoint 1](#checkpoint-1-modules)
-    - [Preprocessing](#1-preprocessing-preprocessingpy)
-    - [Vectorization](#2-vectorization-vectorizationpy)
-    - [Main Script](#3-main-script-mainpy-checkpoint-1)
-  - [Checkpoint 2](#checkpoint-2-modules)
-    - [Configuration](#4-configuration-configpy)
-    - [Data Loading](#5-data-loading-data_loadingpy)
-    - [Model Definitions](#6-model-definitions-model_definitionspy)
-    - [Training](#7-training-trainpy)
-    - [Evaluation](#8-evaluation-evaluatepy)
-    - [Main Script](#9-main-script-mainpy-checkpoint-2)
+Features
 
----
+Folder Structure
 
-## 📝 Overview
+Usage
+
+Checkpoint 1
+
+Checkpoint 2
+
+Modules
+
+Checkpoint 1
+
+Preprocessing
+
+Vectorization
+
+Main Script
+
+Checkpoint 2
+
+Configuration
+
+Data Loading
+
+Model Definitions
+
+Training
+
+Evaluation
+
+Main Script
+
+Evaluation Metrics
+
+📝 Overview
 
 This pipeline is designed to process raw datasets of reviews through several stages: preprocessing, feature extraction, model training, and evaluation. The project is modularly divided into two checkpoints:
 
-- **Checkpoint 1:** Focuses on text cleaning, preprocessing, and vectorization into numerical features.
-- **Checkpoint 2:** Trains multiple machine learning models, evaluates them, and identifies the best-performing model for detecting fake reviews.
+Checkpoint 1: Focuses on text cleaning, preprocessing, and vectorization into numerical features.
 
----
+Checkpoint 2: Trains multiple machine learning models, evaluates them, and identifies the best-performing model for detecting fake reviews.
 
-## ✨ Features
+✨ Features
 
-- **Text Preprocessing**
-  - Expands contractions (e.g., "can't" → "cannot").
-  - Removes punctuation, digits, and stopwords.
-  - Converts text to lowercase and applies lemmatization.
+Text Preprocessing
 
-- **TF-IDF Vectorization**
-  - Converts text into numerical features using Term Frequency-Inverse Document Frequency.
-  - Configurable for n-grams, feature limits, and frequency thresholds.
+Expands contractions (e.g., "can't" → "cannot").
 
-- **Model Training**
-  - Supports Logistic Regression, Random Forest, Feedforward Neural Networks, and SVMs.
+Removes punctuation, digits, and stopwords.
 
-- **Evaluation Metrics**
-  - Reports performance metrics such as accuracy, precision, recall, and F1-score.
+Converts text to lowercase and applies lemmatization.
 
-- **Model Persistence**
-  - Saves trained models for future use.
+TF-IDF Vectorization
 
-- **Best Model Selection**
-  - Identifies the best model based on the validation F1-score.
+Converts text into numerical features using Term Frequency-Inverse Document Frequency.
 
-- **Modular Design**
-  - Enables maintainability, scalability, and customization.
+Configurable for n-grams, feature limits, and frequency thresholds.
 
----
+Model Training
 
-## 📁 Folder Structure
+Supports Logistic Regression, Random Forest, Feedforward Neural Networks, and SVMs.
 
-```plaintext
+Evaluation Metrics
+
+Reports performance metrics such as accuracy, precision, recall, and F1-score.
+
+Model Persistence
+
+Saves trained models for future use.
+
+Best Model Selection
+
+Identifies the best model based on the validation F1-score.
+
+Modular Design
+
+Enables maintainability, scalability, and customization.
+
+📁 Folder Structure
 Project_WoC_7.0_Fake_Review_Detection/
 ├── checkpoint_1/
 │   ├── preprocessing.py       # Functions for text preprocessing
@@ -86,117 +106,165 @@ Project_WoC_7.0_Fake_Review_Detection/
 │   ├── output/                # Output metrics and results
 │   └── __pycache__/           # Compiled Python files
 └── README.md                  # Project documentation
-```
+content_copy
+download
+Use code with caution.
+🚀 Usage
+Checkpoint 1
 
----
+Prepare the Input Dataset:
 
-## 🚀 Usage
+Place your dataset in the checkpoint_1/data/ folder.
 
-### Checkpoint 1
+Ensure the file is a CSV with a text column named text (or update TEXT_COLUMN in main.py).
 
-1. **Prepare the Input Dataset:**
-   - Place your dataset in the `checkpoint_1/data/` folder.
-   - Ensure the file is a CSV with a text column named `text` (or update `TEXT_COLUMN` in `main.py`).
+Run the Preprocessing Pipeline:
+Execute the pipeline by running:
 
-2. **Run the Preprocessing Pipeline:**
-   Execute the pipeline by running:
-   ```bash
-   python checkpoint_1/main.py
-   ```
+python checkpoint_1/main.py
+content_copy
+download
+Use code with caution.
+Bash
 
-3. **Output:**
-   - The processed dataset will be saved in `checkpoint_1/output/` as `FakeReviewDataPreprocessed.csv`.
+Output:
 
-### Checkpoint 2
+The processed dataset will be saved in checkpoint_1/output/ as FakeReviewDataPreprocessed.csv.
 
-1. **Ensure Checkpoint 1 is Completed:**
-   - Verify that `FakeReviewDataPreprocessed.csv` exists in the `checkpoint_1/output/` folder.
+Checkpoint 2
 
-2. **Run the Training and Evaluation Pipeline:**
-   Execute the pipeline by running:
-   ```bash
-   python checkpoint_2/main.py
-   ```
+Ensure Checkpoint 1 is Completed:
 
-3. **Output:**
-   - Trained models will be saved in `checkpoint_2/models/`.
-   - Evaluation metrics will be saved in `checkpoint_2/output/` as `model_evaluation_metrics.txt`.
+Verify that FakeReviewDataPreprocessed.csv exists in the checkpoint_1/output/ folder.
 
----
+Run the Training and Evaluation Pipeline:
+Execute the pipeline by running:
 
-## 📦 Modules
+python checkpoint_2/main.py
+content_copy
+download
+Use code with caution.
+Bash
 
-### Checkpoint 1 Modules
+Output:
 
-#### 1. Preprocessing (`preprocessing.py`)
+Trained models will be saved in checkpoint_2/models/.
+
+Evaluation metrics will be saved in checkpoint_2/output/ as model_evaluation_metrics.txt.
+
+📦 Modules
+Checkpoint 1 Modules
+1. Preprocessing (preprocessing.py)
+
 Handles text cleaning and normalization:
 
-- Expands contractions (e.g., "can't" → "cannot").
-- Converts text to lowercase.
-- Removes punctuation, digits, and stopwords.
-- Applies tokenization and lemmatization.
+Expands contractions (e.g., "can't" → "cannot").
 
-#### 2. Vectorization (`vectorization.py`)
+Converts text to lowercase.
+
+Removes punctuation, digits, and stopwords.
+
+Applies tokenization and lemmatization.
+
+2. Vectorization (vectorization.py)
+
 Extracts numerical features from preprocessed text using TF-IDF:
 
-- Configurable parameters include:
-  - Maximum features (`max_features`).
-  - N-gram range (`ngram_range`).
-  - Frequency thresholds (`max_df`, `min_df`).
+Configurable parameters include:
 
-#### 3. Main Script (`main.py`)
+Maximum features (max_features).
+
+N-gram range (ngram_range).
+
+Frequency thresholds (max_df, min_df).
+
+3. Main Script (main.py)
+
 Orchestrates Checkpoint 1:
 
-- Loads the dataset.
-- Applies preprocessing and vectorization.
-- Saves the processed dataset to the output folder.
+Loads the dataset.
 
-### Checkpoint 2 Modules
+Applies preprocessing and vectorization.
 
-#### 4. Configuration (`config.py`)
+Saves the processed dataset to the output folder.
+
+Checkpoint 2 Modules
+4. Configuration (config.py)
+
 Defines project-wide constants:
 
-- Paths for input, models, and outputs.
-- Filenames for datasets and evaluation metrics.
+Paths for input, models, and outputs.
 
-#### 5. Data Loading (`data_loading.py`)
+Filenames for datasets and evaluation metrics.
+
+5. Data Loading (data_loading.py)
+
 Loads and prepares the dataset from Checkpoint 1:
 
-- Reads `FakeReviewDataPreprocessed.csv`.
-- Splits data into training, validation, and test sets.
+Reads FakeReviewDataPreprocessed.csv.
 
-#### 6. Model Definitions (`model_definitions.py`)
+Splits data into training, validation, and test sets.
+
+6. Model Definitions (model_definitions.py)
+
 Defines the model and dataset classes:
 
-- `BinaryClassifier` for the feedforward neural network.
-- `ReviewDataset` for data handling within the neural network.
+BinaryClassifier for the feedforward neural network.
 
-#### 7. Training (`train.py`)
+ReviewDataset for data handling within the neural network.
+
+7. Training (train.py)
+
 Trains and evaluates models:
 
-- Includes Logistic Regression, Random Forest, Neural Network, and SVM.
-- Calculates training, validation, and test metrics.
-- Saves trained models to disk.
+Includes Logistic Regression, Random Forest, Neural Network, and SVM.
 
-#### 8. Evaluation (`evaluate.py`)
+Calculates training, validation, and test metrics.
+
+Saves trained models to disk.
+
+8. Evaluation (evaluate.py)
+
 Loads and evaluates trained models:
 
-- Computes F1-score on training, validation, and test sets.
-- Determines the best-performing model.
-- Saves evaluation metrics to `model_evaluation_metrics.txt`.
+Computes F1-score on training, validation, and test sets.
 
-#### 9. Main Script (`main.py`)
+Determines the best-performing model.
+
+Saves evaluation metrics to model_evaluation_metrics.txt.
+
+9. Main Script (main.py)
+
 Orchestrates Checkpoint 2:
 
-- Loads data using `data_loading.py`.
-- Trains models using `train.py`.
-- Evaluates models using `evaluate.py`.
-- Reports results and handles exceptions.
+Loads data using data_loading.py.
 
----
+Trains models using train.py.
 
-## 🌟 Acknowledgements
+Evaluates models using evaluate.py.
+
+Reports results and handles exceptions.
+
+📊 Evaluation Metrics
+
+The following metrics were obtained after running Checkpoint 2:
+
+Evaluation Metrics:
++---------------------+------------+-----------------+-----------+
+| Model               |   Train F1 |   Validation F1 |   Test F1 |
++=====================+============+=================+===========+
+| Logistic Regression |   0.869416 |        0.844355 |  0.848679 |
++---------------------+------------+-----------------+-----------+
+| Random Forest       |   0.999783 |        0.811417 |  0.819198 |
++---------------------+------------+-----------------+-----------+
+| SVM                 |   0.856873 |        0.827732 |  0.833204 |
++---------------------+------------+-----------------+-----------+
+| Neural Network      |   0.993569 |        0.846782 |  0.854135 |
++---------------------+------------+-----------------+-----------+
+Best performing model based on validation F1 score: Neural Network
+content_copy
+download
+Use code with caution.
+🌟 Acknowledgements
 
 This project is part of WoC 7.0, developed to demonstrate a comprehensive pipeline for detecting fake reviews using NLP and ML techniques. Special thanks to the mentors for their guidance and support.
-
----
