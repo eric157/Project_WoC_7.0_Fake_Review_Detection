@@ -13,8 +13,8 @@ A comprehensive pipeline for text data preprocessing, feature extraction, model 
 - [Checkpoint 1](#checkpoint-1-1)
 - [Checkpoint 2](#checkpoint-2-1)
 - [Modules](#-modules)
-  - [Checkpoint 1 Modules](#-checkpoint-1-modules)
-  - [Checkpoint 2 Modules](#-checkpoint-2-modules)
+  - [Checkpoint 1 Modules](#checkpoint-1-modules)
+  - [Checkpoint 2 Modules](#checkpoint-2-modules)
 - [Evaluation Metrics](#-evaluation-metrics)
 - [Acknowledgements](#-acknowledgements)
 
