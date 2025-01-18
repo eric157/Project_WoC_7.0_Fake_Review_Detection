@@ -1,6 +1,6 @@
-# 📚 Fake Review Detection Preprocessing Pipeline
+# 🤖 Fake Review Detection Pipeline
 
-A modular and scalable pipeline for text data preprocessing and feature extraction using TF-IDF. This project is designed to handle tasks essential in natural language processing (NLP) workflows, including text cleaning, lemmatization, stopword removal, and vectorization.
+A comprehensive pipeline for text data preprocessing, feature extraction, model training, and evaluation, culminating in the selection of the best-performing model for fake review detection. This project leverages advanced techniques from natural language processing (NLP) and machine learning (ML).
 
 ---
 
@@ -10,90 +10,193 @@ A modular and scalable pipeline for text data preprocessing and feature extracti
 - [Features](#-features)
 - [Folder Structure](#-folder-structure)
 - [Usage](#-usage)
+  - [Checkpoint 1](#checkpoint-1)
+  - [Checkpoint 2](#checkpoint-2)
 - [Modules](#-modules)
-  - [Preprocessing](#1-preprocessing-preprocessingpy)
-  - [Vectorization](#2-vectorization-vectorizationpy)
-  - [Main Script](#3-main-script-mainpy)
+  - [Checkpoint 1](#checkpoint-1-modules)
+    - [Preprocessing](#1-preprocessing-preprocessingpy)
+    - [Vectorization](#2-vectorization-vectorizationpy)
+    - [Main Script](#3-main-script-mainpy-checkpoint-1)
+  - [Checkpoint 2](#checkpoint-2-modules)
+    - [Configuration](#4-configuration-configpy)
+    - [Data Loading](#5-data-loading-data_loadingpy)
+    - [Model Definitions](#6-model-definitions-model_definitionspy)
+    - [Training](#7-training-trainpy)
+    - [Evaluation](#8-evaluation-evaluatepy)
+    - [Main Script](#9-main-script-mainpy-checkpoint-2)
 
 ---
 
 ## 📝 Overview
 
-This pipeline preprocesses a dataset of reviews and prepares it for analysis or modeling. Key features include:
+This pipeline is designed to process raw datasets of reviews through several stages: preprocessing, feature extraction, model training, and evaluation. The project is modularly divided into two checkpoints:
 
-- Text preprocessing (e.g., contraction expansion, tokenization, lemmatization).
-- Feature extraction via TF-IDF vectorization.
-- Modularized components for maintainability and scalability.
+- **Checkpoint 1:** Focuses on text cleaning, preprocessing, and vectorization into numerical features.
+- **Checkpoint 2:** Trains multiple machine learning models, evaluates them, and identifies the best-performing model for detecting fake reviews.
 
 ---
 
 ## ✨ Features
 
-- **Clean and Normalize Text**: Includes expansion of contractions, removal of punctuation and digits, tokenization, and lemmatization.
-- **TF-IDF Feature Extraction**: Converts text into numerical features using unigrams and bigrams.
-- **Scalable Design**: Modular architecture to extend and customize the pipeline for different use cases.
+- **Text Preprocessing**
+  - Expands contractions (e.g., "can't" → "cannot").
+  - Removes punctuation, digits, and stopwords.
+  - Converts text to lowercase and applies lemmatization.
+
+- **TF-IDF Vectorization**
+  - Converts text into numerical features using Term Frequency-Inverse Document Frequency.
+  - Configurable for n-grams, feature limits, and frequency thresholds.
+
+- **Model Training**
+  - Supports Logistic Regression, Random Forest, Feedforward Neural Networks, and SVMs.
+
+- **Evaluation Metrics**
+  - Reports performance metrics such as accuracy, precision, recall, and F1-score.
+
+- **Model Persistence**
+  - Saves trained models for future use.
+
+- **Best Model Selection**
+  - Identifies the best model based on the validation F1-score.
+
+- **Modular Design**
+  - Enables maintainability, scalability, and customization.
 
 ---
 
 ## 📁 Folder Structure
 
-The project directory is organized as follows:
-
 ```plaintext
 Project_WoC_7.0_Fake_Review_Detection/
-└── checkpoint_1/
-    ├── preprocessing.py       # Functions for text preprocessing (cleaning, lemmatization, etc.)
-    ├── vectorization.py       # TF-IDF vectorization logic for feature extraction
-    ├── main.py                # Main script to run the entire pipeline
-    ├── data/                  # Folder to store input datasets (e.g., CSV files with reviews)
-    ├── output/                # Folder to store the processed datasets and results
-└── README.md              # Project documentation (this file)
+├── checkpoint_1/
+│   ├── preprocessing.py       # Functions for text preprocessing
+│   ├── vectorization.py       # TF-IDF vectorization logic
+│   ├── main.py                # Main script for Checkpoint 1
+│   ├── data/                  # Input datasets
+│   ├── output/                # Preprocessed datasets
+│   └── __pycache__/           # Compiled Python files
+├── checkpoint_2/
+│   ├── config.py              # Configuration settings
+│   ├── data_loading.py        # Data loading functions
+│   ├── model_definitions.py   # Model and dataset classes
+│   ├── train.py               # Training and evaluation functions
+│   ├── evaluate.py            # Evaluation logic
+│   ├── main.py                # Main script for Checkpoint 2
+│   ├── models/                # Trained models
+│   ├── output/                # Output metrics and results
+│   └── __pycache__/           # Compiled Python files
+└── README.md                  # Project documentation
 ```
+
 ---
 
 ## 🚀 Usage
 
-1. **Prepare the Input Dataset**:
-   - Place your dataset in the `data/` folder.
+### Checkpoint 1
+
+1. **Prepare the Input Dataset:**
+   - Place your dataset in the `checkpoint_1/data/` folder.
    - Ensure the file is a CSV with a text column named `text` (or update `TEXT_COLUMN` in `main.py`).
 
-2. **Run the Pipeline**:
+2. **Run the Preprocessing Pipeline:**
    Execute the pipeline by running:
-
    ```bash
    python checkpoint_1/main.py
    ```
 
-3. **Output**:
-   The processed dataset will be saved in the `output/` folder as `FakeReviewDataPreprocessed.csv`.
+3. **Output:**
+   - The processed dataset will be saved in `checkpoint_1/output/` as `FakeReviewDataPreprocessed.csv`.
+
+### Checkpoint 2
+
+1. **Ensure Checkpoint 1 is Completed:**
+   - Verify that `FakeReviewDataPreprocessed.csv` exists in the `checkpoint_1/output/` folder.
+
+2. **Run the Training and Evaluation Pipeline:**
+   Execute the pipeline by running:
+   ```bash
+   python checkpoint_2/main.py
+   ```
+
+3. **Output:**
+   - Trained models will be saved in `checkpoint_2/models/`.
+   - Evaluation metrics will be saved in `checkpoint_2/output/` as `model_evaluation_metrics.txt`.
 
 ---
 
 ## 📦 Modules
 
-### **1. Preprocessing (`preprocessing.py`)**
+### Checkpoint 1 Modules
 
+#### 1. Preprocessing (`preprocessing.py`)
 Handles text cleaning and normalization:
 
 - Expands contractions (e.g., "can't" → "cannot").
 - Converts text to lowercase.
-- Removes punctuation and digits.
-- Tokenizes, removes stopwords, and applies lemmatization.
+- Removes punctuation, digits, and stopwords.
+- Applies tokenization and lemmatization.
 
-### **2. Vectorization (`vectorization.py`)**
+#### 2. Vectorization (`vectorization.py`)
+Extracts numerical features from preprocessed text using TF-IDF:
 
-Extracts features from preprocessed text:
-
-- Uses TF-IDF vectorization to convert text into numerical data.
 - Configurable parameters include:
   - Maximum features (`max_features`).
   - N-gram range (`ngram_range`).
   - Frequency thresholds (`max_df`, `min_df`).
 
-### **3. Main Script (`main.py`)**
-
-Orchestrates the workflow:
+#### 3. Main Script (`main.py`)
+Orchestrates Checkpoint 1:
 
 - Loads the dataset.
 - Applies preprocessing and vectorization.
-- Saves the final dataset to the output folder.
+- Saves the processed dataset to the output folder.
+
+### Checkpoint 2 Modules
+
+#### 4. Configuration (`config.py`)
+Defines project-wide constants:
+
+- Paths for input, models, and outputs.
+- Filenames for datasets and evaluation metrics.
+
+#### 5. Data Loading (`data_loading.py`)
+Loads and prepares the dataset from Checkpoint 1:
+
+- Reads `FakeReviewDataPreprocessed.csv`.
+- Splits data into training, validation, and test sets.
+
+#### 6. Model Definitions (`model_definitions.py`)
+Defines the model and dataset classes:
+
+- `BinaryClassifier` for the feedforward neural network.
+- `ReviewDataset` for data handling within the neural network.
+
+#### 7. Training (`train.py`)
+Trains and evaluates models:
+
+- Includes Logistic Regression, Random Forest, Neural Network, and SVM.
+- Calculates training, validation, and test metrics.
+- Saves trained models to disk.
+
+#### 8. Evaluation (`evaluate.py`)
+Loads and evaluates trained models:
+
+- Computes F1-score on training, validation, and test sets.
+- Determines the best-performing model.
+- Saves evaluation metrics to `model_evaluation_metrics.txt`.
+
+#### 9. Main Script (`main.py`)
+Orchestrates Checkpoint 2:
+
+- Loads data using `data_loading.py`.
+- Trains models using `train.py`.
+- Evaluates models using `evaluate.py`.
+- Reports results and handles exceptions.
+
+---
+
+## 🌟 Acknowledgements
+
+This project is part of WoC 7.0, developed to demonstrate a comprehensive pipeline for detecting fake reviews using NLP and ML techniques. Special thanks to the mentors for their guidance and support.
+
+---

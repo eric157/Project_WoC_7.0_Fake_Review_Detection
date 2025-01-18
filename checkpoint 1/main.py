@@ -22,7 +22,7 @@ if __name__ == "__main__":
     DATA_PATH = "data/fakeReviewData.csv"
     TEXT_COLUMN = "text"
     OUTPUT_PATH = "output/FakeReviewDataPreprocessed.csv"
-    MAX_FEATURES = 500
+    MAX_FEATURES = 5000
 
     try:
         df = load_and_preprocess_dataset(DATA_PATH, TEXT_COLUMN)
