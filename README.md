@@ -6,17 +6,17 @@ A comprehensive pipeline for text data preprocessing, feature extraction, model 
 
 ## 🗂 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Folder Structure](#folder-structure)
-- [Usage](#usage)
-- [Checkpoint 1](#checkpoint-1)
-- [Checkpoint 2](#checkpoint-2)
-- [Modules](#modules)
-  - [Checkpoint 1 Modules](#checkpoint-1-modules)
-  - [Checkpoint 2 Modules](#checkpoint-2-modules)
-- [Evaluation Metrics](#evaluation-metrics)
-- [Acknowledgements](#acknowledgements)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Folder Structure](#-folder-structure)
+- [Usage](#-usage)
+- [Checkpoint 1](#-checkpoint-1)
+- [Checkpoint 2](#-checkpoint-2)
+- [Modules](#-modules)
+  - [Checkpoint 1 Modules](#-checkpoint-1-modules)
+  - [Checkpoint 2 Modules](#-checkpoint-2-modules)
+- [Evaluation Metrics](#-evaluation-metrics)
+- [Acknowledgements](#-acknowledgements)
 
 ## 📝 Overview
 
