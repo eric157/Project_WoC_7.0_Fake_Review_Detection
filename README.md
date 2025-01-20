@@ -1,5 +1,3 @@
-Here is the formatted version of your `README.md` file:
-
 # 🤖 Fake Review Detection Pipeline
 
 A comprehensive pipeline for text data preprocessing, feature extraction, model training, and evaluation, culminating in the selection of the best-performing model for fake review detection. This project leverages advanced techniques from natural language processing (NLP) and machine learning (ML).
