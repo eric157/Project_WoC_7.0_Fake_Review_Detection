@@ -16,7 +16,6 @@ def vectorize_text(df, text_column, max_features=500):
     """
     tfidf_vectorizer = TfidfVectorizer(
         max_features=max_features,
-        ngram_range=(1, 2),
         stop_words='english'
     )
     tfidf_matrix = tfidf_vectorizer.fit_transform(df[text_column])
