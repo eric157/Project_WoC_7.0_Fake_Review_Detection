@@ -1,4 +1,3 @@
-# evaluate.py
 import os
 import joblib
 import torch
