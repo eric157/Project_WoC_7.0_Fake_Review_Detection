@@ -173,12 +173,12 @@ The following metrics were obtained after running Checkpoint 2:
 
 | Model               | Train F1  | Validation F1 | Test F1  |
 |---------------------|-----------|---------------|----------|
-| Logistic Regression | 0.869416  | 0.844355      | 0.848679 |
-| Random Forest       | 0.999783  | 0.811417      | 0.819198 |
-| SVM                 | 0.856873  | 0.827732      | 0.833204 |
-| Neural Network      | 0.993569  | 0.846782      | 0.854135 |
+| Logistic Regression | 0.883249  | 0.848978      | 0.863504 |
+| Random Forest       | 0.999876  | 0.816254      | 0.832355 |
+| SVM                 | 0.880351  | 0.8485        | 0.861658 |
+| Neural Network      | 0.996439  | 0.848303      | 0.859306 |
 
-**Best performing model based on validation F1 score**: Neural Network
+**Best performing model based on validation F1 score**: Logistic Regression
 
 ## 🌟 Acknowledgements
 
