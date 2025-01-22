@@ -1,4 +1,3 @@
-# main.py
 import os
 from config import MODEL_DIR, OUTPUT_DIR
 from data_loading import load_and_prepare_data
