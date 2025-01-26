@@ -82,7 +82,7 @@ Project_WoC_7.0_Fake_Review_Detection/
 │   └── output/                      # Output metrics and results
 └── checkpoint 3/
 │   ├── scraping.ipynb               # Jupyter notebook for web scraping
-│   ├── scraped_Reviews.csv          # Scraped reviews
+│   ├── scraped_reviews.csv          # Scraped reviews
 └── README.md                        # Project documentation
 ```
 
@@ -121,7 +121,7 @@ Project_WoC_7.0_Fake_Review_Detection/
    - Execute the `scraping.ipynb` notebook.
    - Enter the Amazon product URL when prompted.
    - Output:
-     - Scraped reviews saved in the root directory as `scraped_Reviews.csv`.
+     - Scraped reviews saved in the root directory as `scraped_reviews.csv`.
 
 ---
 
