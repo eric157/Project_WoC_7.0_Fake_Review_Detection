@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Review Detector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shield-check"></i> Fake Review Detector</h1>
+            <p class="tagline">Analyze Amazon product reviews for authenticity.</p>
+        </header>
+        <section class="input-area">
+            <input type="text" id="productUrl" placeholder="Enter Amazon Product URL">
+            <button onclick="analyzeReviews()">Analyze <i class="fas fa-search"></i></button>
+        </section>
+        <section id="results" class="results-area">
+            <div id="summary" class="summary-area" style="display:none;">
+                <h2>Analysis Summary</h2>
+                <div class="summary-metrics">
+                    <div class="metric-box">
+                        <i class="fas fa-star rating-icon"></i>
+                        <span id="averageRating">--</span>
+                        <label>Avg. Rating</label>
+                    </div>
+                    <div class="metric-box">
+                        <i class="fas fa-list-ol count-icon"></i>
+                        <span id="reviewCount">--</span>
+                        <label>Reviews Analyzed</label>
+                    </div>
+                </div>
+            </div>
+            <div id="reviews-list">
+                <!-- Reviews and predictions will be displayed here -->
+            </div>
+        </section>
+        <footer>
+            <div class="footer-content">
+                <p>© 2025 Fake Review Detector</p>
+                <a href="https://github.com/eric157/Project_WoC_7.0_Fake_Review_Detection" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i> GitHub Repository
+                </a>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

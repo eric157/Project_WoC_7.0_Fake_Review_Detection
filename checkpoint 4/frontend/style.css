@@ -1,0 +1,345 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f7fb;
+    color: #34495e;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    width: 88%;
+    max-width: 1150px;
+    margin: 35px auto;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 7px 28px rgba(0,0,0,0.18);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 10px 35px rgba(0,0,0,0.22);
+}
+
+/* Header Styles (same as before) */
+header {
+    background-color: #1e88e5;
+    color: #ffffff;
+    padding: 40px 45px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.7em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+header h1 i {
+    margin-right: 18px;
+    font-size: 1.3em;
+    opacity: 0.92;
+}
+
+header .tagline {
+    font-size: 1.3em;
+    color: #ecf3ff;
+    margin-top: 18px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+/* Input Area Styles (same as before) */
+.input-area {
+    padding: 35px 45px;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
+}
+
+.input-area input[type="text"] {
+    padding: 15px;
+    width: 78%;
+    max-width: 450px;
+    margin-right: 20px;
+    border: 1.5px solid #adb5bd;
+    border-radius: 10px;
+    font-size: 1.15em;
+    color: #495057;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-area input[type="text"]:focus {
+    outline: none;
+    border-color: #1e88e5;
+    box-shadow: 0 0 0 0.2rem rgba(30, 136, 229, 0.25), inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.input-area button {
+    padding: 15px 35px;
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.15em;
+    font-weight: 500;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.18);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.input-area button:hover {
+    background-color: #1565c0;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+}
+
+.input-area button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.18);
+}
+
+
+/* Results Area Styles (same as before) */
+.results-area {
+    padding: 35px 45px;
+    background-color: #ffffff;
+}
+
+/* Loading Animation Styles */
+#reviews-list p.loading-message-container {
+    display: flex; /* Enable Flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 40px 0; /* Add padding around loading message */
+    font-size: 1.2em;
+    color: #777;
+    opacity: 0.8;
+}
+
+#reviews-list p.loading-message-container i.fas.fa-circle-notch.fa-spin.loading-icon {
+    margin-left: 10px; /* Space between text and spinner */
+    font-size: 1.2em; /* Match spinner size to text */
+    color: #1e88e5; /* Keep spinner blue */
+    animation: rotateSpinner 1.5s linear infinite; /* Define spinner animation */
+}
+
+@keyframes rotateSpinner {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* Summary Area Styles (same as before) */
+.summary-area {
+    margin-bottom: 35px;
+    padding-bottom: 30px;
+    border-bottom: 2.5px dashed #d8dee4;
+    text-align: center;
+}
+
+.summary-area h2 {
+    color: #1e88e5;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.3em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.summary-metrics {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.metric-box {
+    background-color: #eceff1;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    padding: 35px 30px;
+    text-align: center;
+    margin-bottom: 30px;
+    width: calc(40% - 80px);
+    min-width: 220px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-box:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+
+.metric-box i {
+    font-size: 2.8em;
+    margin-bottom: 18px;
+    color: #1e88e5;
+    opacity: 0.96;
+}
+
+
+.metric-box span {
+    display: block;
+    font-size: 2.8em;
+    font-weight: 700;
+    color: #4a4a4a;
+    letter-spacing: -0.04em;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+.metric-box label {
+    display: block;
+    font-size: 1.1em;
+    color: #555;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+
+/* Reviews List Styles (same as before) */
+#reviews-list h2 {
+    color: #1e88e5;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.4em;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+#reviews-list p:not(.error) {
+    color: #5a5a5a;
+}
+
+#reviews-list p.error {
+    color: #c62828;
+    font-weight: 600;
+    background-color: #ffebee;
+    padding: 18px;
+    border-radius: 10px;
+    border: 1.5px solid #ef9a9a;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+
+.review-item {
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1.5px solid #e8eaf6;
+    border-radius: 12px;
+    background-color: #fdfdfe;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.09);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.review-item:hover {
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+    border-color: #d0d9e0;
+}
+
+
+.review-text {
+    font-style: italic;
+    color: #616161;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+.review-rating {
+    font-size: 1.05em;
+    color: #777;
+    margin-bottom: 12px;
+}
+
+.prediction {
+    font-weight: 600;
+    font-size: 1.15em;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+.prediction.fake {
+    color: #e53935;
+}
+
+.prediction.real {
+    color: #43a047;
+}
+
+.prediction.language-error-prediction-failed,
+.prediction.prediction-error {
+    color: #f57c00;
+}
+
+
+/* Footer Styles (same as before) */
+footer {
+    background-color: #34495e;
+    color: #cfd8dc;
+    text-align: center;
+    padding: 25px 45px;
+    font-size: 1em;
+    box-shadow: inset 0 4px 6px rgba(0,0,0,0.18);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+footer p {
+    margin: 0;
+    opacity: 0.85;
+}
+
+footer a {
+    color: #eceff1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+footer a i.fab.fa-github {
+    margin-right: 10px;
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+
+footer a:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+}
