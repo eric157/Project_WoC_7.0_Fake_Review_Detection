@@ -334,8 +334,18 @@ def scrape_and_predict():
                 if processed_features.empty:
                     prediction = None
                 else:
-                    prediction = model.predict(processed_features)[0]
-                predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": str(prediction) if prediction is not None else "Language Error/Prediction Failed"})
+                   prediction = model.predict(processed_features)[0]
+
+                # Map the prediction to "Real" or "Fake"
+                if prediction == 1.0:
+                    prediction_text = "Real"
+                elif prediction == 0.0:
+                    prediction_text = "Fake"
+                else:
+                   prediction_text = "Language Error/Prediction Failed"
+
+
+                predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": prediction_text})
             except Exception as pred_err:
                 logging.error(f"Prediction error for review: {pred_err}")
                 predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": "Prediction Error"})
