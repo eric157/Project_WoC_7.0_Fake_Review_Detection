@@ -24,6 +24,8 @@ import pickle
 import logging
 from flask_cors import CORS
 from flask import send_from_directory
+import numpy as np
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 nltk.download('punkt', quiet=True)
@@ -313,6 +315,7 @@ def scrape_amazon_reviews(product_url, max_reviews=50, phone_number="9727715703"
 @app.route('/scrape_and_predict', methods=['POST'])
 def scrape_and_predict():
     product_url = request.json.get('product_url')
+    max_reviews = request.json.get('max_reviews', 50) # Default to 50 if not provided
     if not product_url:
         return jsonify({"error": "Product URL is required"}), 400
 
@@ -322,35 +325,50 @@ def scrape_and_predict():
         password = os.environ.get("AMAZON_PASSWORD") or "YOUR_PASSWORD" # Use env vars, fallback to placeholder
 
 
-        reviews = scrape_amazon_reviews(product_url, max_reviews=50, phone_number=phone_number, password=password) # Increased max_reviews to 50
+        reviews = scrape_amazon_reviews(product_url, max_reviews=max_reviews, phone_number=phone_number, password=password)
         print("Scraped Reviews:", reviews)
         if not reviews:
             return jsonify({"error": "No reviews scraped", "reviews": []}), 200
 
         predictions = []
+        fake_count = 0
+        start_time = time.time()
         for review_data in reviews:
             try:
                 processed_features = preprocess_new_text(review_data['text'], review_data['rating'])
                 if processed_features.empty:
                     prediction = None
+                    probability = None
+                    prediction_text = "Language Error/Prediction Failed"
                 else:
-                   prediction = model.predict(processed_features)[0]
+                    prediction = model.predict(processed_features)[0]
+                    probability = model.predict_proba(processed_features)[0]
+                    if prediction == 1.0: # Now correct
+                      prediction_text = "Real"
+                      probability = probability[1]  # Probability of being Real
+                    elif prediction == 0.0: # Now correct
+                        prediction_text = "Fake"
+                        fake_count +=1
+                        probability = probability[0] # Probability of being Fake
+                    else:
+                       prediction_text = "Language Error/Prediction Failed"
+                       probability = None
 
-                # Map the prediction to "Real" or "Fake"
-                if prediction == 1.0:
-                    prediction_text = "Real"
-                elif prediction == 0.0:
-                    prediction_text = "Fake"
-                else:
-                   prediction_text = "Language Error/Prediction Failed"
-
-
-                predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": prediction_text})
+                predictions.append({
+                    "review": review_data['text'],
+                    "rating": review_data['rating'],
+                    "prediction": prediction_text,
+                    "probability": str(probability) if probability is not None else None
+                })
             except Exception as pred_err:
                 logging.error(f"Prediction error for review: {pred_err}")
-                predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": "Prediction Error"})
+                predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": "Prediction Error", "probability":None})
 
-        return jsonify({"reviews_data": predictions}), 200
+        end_time = time.time()
+        inference_time = end_time - start_time
+        total_reviews = len(predictions)
+        fake_percentage = (fake_count/total_reviews) * 100 if total_reviews > 0 else 0
+        return jsonify({"reviews_data": predictions, "fake_percentage": fake_percentage, "inference_time": inference_time}), 200
 
     except ValueError as ve:
         return jsonify({"error": str(ve)}), 400

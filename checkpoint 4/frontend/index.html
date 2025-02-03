@@ -16,6 +16,7 @@
         </header>
         <section class="input-area">
             <input type="text" id="productUrl" placeholder="Enter Amazon Product URL">
+            <input type="number" id="numReviews" placeholder="Number of Reviews" value="50" min="1" step="1">
             <button onclick="analyzeReviews()">Analyze <i class="fas fa-search"></i></button>
         </section>
         <section id="results" class="results-area">
@@ -27,6 +28,16 @@
                         <span id="averageRating">--</span>
                         <label>Avg. Rating</label>
                     </div>
+                    <div class="metric-box">
+                        <i class="fas fa-percentage fake-icon"></i>
+                        <span id="fakePercentage">--</span>
+                        <label>Fake Review Percentage</label>
+                    </div>
+                    <div class="metric-box">
+                         <i class="fas fa-stopwatch time-icon"></i>
+                         <span id="inferenceTime">--</span>
+                         <label>Inference Time</label>
+                     </div>
                     <div class="metric-box">
                         <i class="fas fa-list-ol count-icon"></i>
                         <span id="reviewCount">--</span>
