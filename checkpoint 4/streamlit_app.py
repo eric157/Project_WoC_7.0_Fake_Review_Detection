@@ -1,15 +1,15 @@
 import os
-import pandas as pd
-import joblib
-from flask import Flask, request, jsonify, send_from_directory
-from bs4 import BeautifulSoup
 import re
 import string
+import time
+import logging
+import pickle
 import nltk
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
-import contractions
+import joblib
+import pandas as pd
+import numpy as np
+import streamlit as st
+from bs4 import BeautifulSoup
 from autocorrect import Speller
 from langdetect import detect, DetectorFactory
 from selenium import webdriver
@@ -19,18 +19,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-import time
-import pickle
-import logging
-from flask_cors import CORS
-import numpy as np
-
-# --- Fix for Flask/Click Import Error ---
-# This is a known issue and a common fix:
-# Downgrade click to an earlier version compatible with Flask.
-# Run this in your terminal:
-# pip uninstall click
-# pip install click==8.0.4
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+import contractions
 
 # --- Logging Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -56,44 +48,39 @@ except LookupError:
 DetectorFactory.seed = 0
 spell = Speller(lang='en')
 
-app = Flask(__name__, static_folder='frontend', static_url_path='/frontend') # Corrected static folder
-CORS(app)
-
-# --- Paths ---
-MODEL_DIR = os.path.join("..", "checkpoint 2", "models")
+# --- Paths (Adjust for Streamlit) ---
+MODEL_DIR = os.path.join("..", "checkpoint 2", "models") # Adjust relative paths for streamlit
 MODEL_PATH = os.path.join(MODEL_DIR, "logistic_regression_model.pkl")
 VECTORIZER_PATH = os.path.join("..", "checkpoint 1", "models", "tfidf_vectorizer.pkl")
 FEATURE_NAMES_PATH = os.path.join("..", "checkpoint 1", "models", "tfidf_feature_names.pkl")
 COOKIES_FILE_PATH = os.path.join("..", "checkpoint 3", "amazon_cookies.pkl") # Corrected path
 
-
 # --- Load Model and Vectorizer ---
+@st.cache_resource
 def load_model():
     if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError(f"Model file not found: {MODEL_PATH}. Please train model first.")
+        st.error(f"Model file not found: {MODEL_PATH}. Please train model first.")
+        return None
     return joblib.load(MODEL_PATH)
 
+@st.cache_resource
 def load_vectorizer():
     if not os.path.exists(VECTORIZER_PATH):
-        raise FileNotFoundError(f"Vectorizer file not found: {VECTORIZER_PATH}. Please run preprocessing first.")
+        st.error(f"Vectorizer file not found: {VECTORIZER_PATH}. Please run preprocessing first.")
+        return None
     return joblib.load(VECTORIZER_PATH)
 
+@st.cache_resource
 def load_feature_names():
     if not os.path.exists(FEATURE_NAMES_PATH):
-        raise FileNotFoundError(f"Feature Names file not found: {FEATURE_NAMES_PATH}.  Please train vectorizer first.")
+        st.error(f"Feature Names file not found: {FEATURE_NAMES_PATH}.  Please train vectorizer first.")
+        return None
     return joblib.load(FEATURE_NAMES_PATH)
 
 
-try:
-    model = load_model()
-    vectorizer = load_vectorizer()
-    feature_names = load_feature_names()
-except FileNotFoundError as e:
-    logging.error(f"Error loading resources: {e}")
-    model = None  # Set to None if loading fails
-    vectorizer = None
-    feature_names = None
-
+model = load_model()
+vectorizer = load_vectorizer()
+feature_names = load_feature_names()
 
 # --- Preprocessing Functions ---
 def preprocess_text(text):
@@ -117,10 +104,11 @@ def preprocess_text(text):
 
 def preprocess_new_text(text, rating):
     if feature_names is None:
-        raise FileNotFoundError("Feature Names not loaded.  Please train vectorizer first")
+        st.error("Feature Names not loaded.  Please train vectorizer first")
+        return None  # Indicate failure
     if vectorizer is None:
-       raise FileNotFoundError("Vectorizer not loaded. Please train vectorizer first")
-
+        st.error("Vectorizer not loaded. Please train vectorizer first")
+        return None # Indicate failure
 
     try:
         if detect(text) != 'en':
@@ -135,7 +123,6 @@ def preprocess_new_text(text, rating):
     tfidf_features['rating'] = float(rating)
     tfidf_features = tfidf_features.reindex(columns = feature_names.tolist() + ['rating'], fill_value=0)
     return tfidf_features
-
 
 # --- Scraping Functions (From user provided code with fixes and comments) ---
 def is_amazon_url(url):
@@ -345,82 +332,104 @@ def scrape_amazon_reviews(product_url, max_reviews=50, phone_number="9727715703"
     return scraped_reviews
 
 
-# --- API Endpoint ---
-@app.route('/scrape_and_predict', methods=['POST'])
-def scrape_and_predict():
-    product_url = request.json.get('product_url')
-    max_reviews = request.json.get('max_reviews', 50) # Default to 50 if not provided
-    if not product_url:
-        return jsonify({"error": "Product URL is required"}), 400
+# --- Streamlit App ---
+def main():
+    st.title("Fake Review Detector")
+    st.markdown("Analyze Amazon product reviews for authenticity.")
 
-    if model is None or vectorizer is None or feature_names is None:
-        return jsonify({"error": "Model or vectorizer not loaded.  Please check server configuration."}), 500
+    product_url = st.text_input("Enter Amazon Product URL")
+    num_reviews = st.number_input("Number of Reviews to Analyze", min_value=1, value=50, step=1)
 
-    try:
-        # --- IMPORTANT: Use environment variables for credentials in production ---
-        phone_number = os.environ.get("AMAZON_PHONE_NUMBER") or "YOUR_PHONE_NUMBER" # Use env vars, fallback to placeholder
-        password = os.environ.get("AMAZON_PASSWORD") or "YOUR_PASSWORD" # Use env vars, fallback to placeholder
+    if st.button("Analyze Reviews"):
+        if not product_url:
+            st.warning("Please enter a product URL.")
+            return
 
+        if not num_reviews or num_reviews <= 0:
+            st.warning("Please enter a valid number of reviews.")
+            return
 
-        reviews = scrape_amazon_reviews(product_url, max_reviews=max_reviews, phone_number=phone_number, password=password)
-        print("Scraped Reviews:", reviews)
-        if not reviews:
-            return jsonify({"error": "No reviews scraped", "reviews": []}), 200
-
-        predictions = []
-        fake_count = 0
-        start_time = time.time()
-        for review_data in reviews:
+        with st.spinner("Analyzing reviews..."):
             try:
-                processed_features = preprocess_new_text(review_data['text'], review_data['rating'])
-                if processed_features.empty:
-                    prediction = None
-                    probability = None
-                    prediction_text = "Language Error/Prediction Failed"
-                else:
-                    prediction = model.predict(processed_features)[0]
-                    probability = model.predict_proba(processed_features)[0]
-                    if prediction == 1.0: # Now correct
-                      prediction_text = "Real"
-                      probability = probability[1]  # Probability of being Real
-                    elif prediction == 0.0: # Now correct
-                        prediction_text = "Fake"
-                        fake_count +=1
-                        probability = probability[0] # Probability of being Fake
-                    else:
-                       prediction_text = "Language Error/Prediction Failed"
-                       probability = None
+                # --- IMPORTANT: Use environment variables for credentials in production ---
+                phone_number = os.environ.get("AMAZON_PHONE_NUMBER") or "YOUR_PHONE_NUMBER" # Use env vars, fallback to placeholder
+                password = os.environ.get("AMAZON_PASSWORD") or "YOUR_PASSWORD" # Use env vars, fallback to placeholder
+                reviews = scrape_amazon_reviews(product_url, max_reviews=int(num_reviews), phone_number=phone_number, password=password)
 
-                predictions.append({
-                    "review": review_data['text'],
-                    "rating": review_data['rating'],
-                    "prediction": prediction_text,
-                    "probability": str(probability) if probability is not None else None
-                })
-            except Exception as pred_err:
-                logging.error(f"Prediction error for review: {pred_err}")
-                predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": "Prediction Error", "probability":None})
+                if not reviews:
+                    st.error("No reviews scraped or an error occurred during scraping.")
+                    return
 
-        end_time = time.time()
-        inference_time = end_time - start_time
-        total_reviews = len(predictions)
-        fake_percentage = (fake_count/total_reviews) * 100 if total_reviews > 0 else 0
-        return jsonify({"reviews_data": predictions, "fake_percentage": fake_percentage, "inference_time": inference_time}), 200
+                predictions = []
+                fake_count = 0
+                start_time = time.time()
+                for review_data in reviews:
+                    try:
+                        processed_features = preprocess_new_text(review_data['text'], review_data['rating'])
+                        if processed_features is None or processed_features.empty:  # Check for None
+                            prediction = None
+                            probability = None
+                            prediction_text = "Language Error/Prediction Failed"
+                        else:
+                            prediction = model.predict(processed_features)[0]
+                            probability = model.predict_proba(processed_features)[0]
+                            if prediction == 1.0: # Now correct
+                                prediction_text = "Real"
+                                probability = probability[1]  # Probability of being Real
+                            elif prediction == 0.0: # Now correct
+                                prediction_text = "Fake"
+                                fake_count +=1
+                                probability = probability[0] # Probability of being Fake
+                            else:
+                                prediction_text = "Language Error/Prediction Failed"
+                                probability = None
 
-    except ValueError as ve:
-        return jsonify({"error": str(ve)}), 400
-    except Exception as e:
-        logging.error(f"Scraping and prediction error: {e}")
-        return jsonify({"error": "Internal server error during scraping and prediction", "details": str(e)}), 500
+                        predictions.append({
+                            "review": review_data['text'],
+                            "rating": review_data['rating'],
+                            "prediction": prediction_text,
+                            "probability": str(probability) if probability is not None else None
+                        })
+                    except Exception as pred_err:
+                        logging.error(f"Prediction error for review: {pred_err}")
+                        predictions.append({"review": review_data['text'], "rating": review_data['rating'], "prediction": "Prediction Error", "probability":None})
 
-@app.route('/frontend/<path:filename>')
-def frontend(filename):
-    return send_from_directory(app.static_folder, filename) # Use app.static_folder
+                end_time = time.time()
+                inference_time = end_time - start_time
+                total_reviews = len(predictions)
+                fake_percentage = (fake_count/total_reviews) * 100 if total_reviews > 0 else 0
 
-@app.route('/')
-def home():
-    return app.send_static_file('index.html') # Serve index.html from static folder
+                # --- Display Summary ---
+                st.header("Analysis Summary")
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    avg_rating = np.mean([float(r['rating']) for r in reviews if r['rating'] is not None and r['rating'].replace('.', '', 1).isdigit()]) if reviews else "N/A"
+                    st.metric("Avg. Rating", f"{avg_rating:.2f}")
+                with col2:
+                    st.metric("Fake Review Percentage", f"{fake_percentage:.2f}%")
+                with col3:
+                    st.metric("Inference Time", f"{inference_time:.3f}s")
+                with col4:
+                    st.metric("Reviews Analyzed", total_reviews)
 
+                # --- Display Reviews ---
+                st.header("Reviews:")
+                for review in predictions:
+                    st.write(f"**Rating:** {review['rating']}")
+                    st.write(f"**Review:** {review['review']}")
+                    st.write(f"**Prediction:** {review['prediction']}")
+                    st.write(f"**Probability:** {review['probability']}")
+                    st.markdown("---")
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+            except ValueError as ve:
+                st.error(f"Error: {ve}")
+            except Exception as e:
+                logging.error(f"Scraping and prediction error: {e}")
+                st.error(f"Internal server error: {e}")
+
+    st.markdown("---")
+    st.markdown("© 2025 Fake Review Detector")
+    st.markdown("[GitHub Repository](https://github.com/eric157/Project_WoC_7.0_Fake_Review_Detection)")
+
+if __name__ == "__main__":
+    main()
