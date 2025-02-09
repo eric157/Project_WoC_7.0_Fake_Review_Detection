@@ -143,14 +143,13 @@ def is_amazon_url(url):
     amazon_pattern = r"(https?://)?(www.)?amazon\.com/.*"
     return bool(re.match(amazon_pattern, url))
 
-def scrape_amazon_reviews(product_url, max_reviews=50, phone_number="9727715703", password="kuku@1108"): # Placeholders, use env vars!
+def scrape_amazon_reviews(product_url, max_reviews=50):
     """
     Scrapes reviews from an Amazon product page, handling dynamic loading, pagination, and CAPTCHAs.
     Attempts to load cookies first, if available, to bypass login.
 
-    Phone number and password are required for login ONLY if cookies are not found or are expired.
-    It's highly recommended to set AMAZON_PHONE_NUMBER and AMAZON_PASSWORD environment variables
-    instead of hardcoding them for security.
+    Phone number and password for login MUST be set as environment variables:
+    AMAZON_PHONE_NUMBER and AMAZON_PASSWORD.
     """
     logging.info(f"Starting scrape_amazon_reviews for URL: {product_url}, max_reviews: {max_reviews}") # Log max_reviews
     if not is_amazon_url(product_url):
@@ -169,6 +168,12 @@ def scrape_amazon_reviews(product_url, max_reviews=50, phone_number="9727715703"
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-extensions") # Disable extensions
     chrome_options.add_argument("--window-size=1920,1080") # Set window size
+
+    # --- Add User-Agent ---
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" # Example User-Agent
+    chrome_options.add_argument(f"user-agent={user_agent}")
+    logging.info(f"Setting User-Agent: {user_agent}")
+
 
     driver_headless = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
@@ -194,8 +199,17 @@ def scrape_amazon_reviews(product_url, max_reviews=50, phone_number="9727715703"
             logging.info("Performing login as cookies were not loaded or not found.")
             driver_login = webdriver.Chrome(service=Service(ChromeDriverManager().install())) # Non-headless for login
             try:
-                logging.info("Attempting to log in using phone number and password.")
+                logging.info("Attempting to log in using phone number and password from environment variables.")
                 driver_login.get(product_url)
+
+                phone_number = os.environ.get("AMAZON_PHONE_NUMBER") # Get from environment variable
+                password = os.environ.get("AMAZON_PASSWORD")     # Get from environment variable
+
+                if not phone_number or not password: # Check if env vars are set
+                    logging.error("Environment variables AMAZON_PHONE_NUMBER and AMAZON_PASSWORD are not set. Login cannot proceed.")
+                    driver_login.quit()
+                    driver_headless.quit()
+                    return [] # Return empty list as login failed
 
                 login_link = WebDriverWait(driver_login, 10).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, "#nav-link-accountList"))
@@ -357,12 +371,9 @@ def scrape_and_predict():
         return jsonify({"error": "Model or vectorizer not loaded.  Please check server configuration."}), 500
 
     try:
-        # --- IMPORTANT: Use environment variables for credentials in production ---
-        phone_number = os.environ.get("AMAZON_PHONE_NUMBER") or "YOUR_PHONE_NUMBER" # Use env vars, fallback to placeholder
-        password = os.environ.get("AMAZON_PASSWORD") or "YOUR_PASSWORD" # Use env vars, fallback to placeholder
+        # --- IMPORTANT: Credentials MUST be set as environment variables ---
+        reviews = scrape_amazon_reviews(product_url, max_reviews=max_reviews) # Removed phone, password args
 
-
-        reviews = scrape_amazon_reviews(product_url, max_reviews=max_reviews, phone_number=phone_number, password=password)
         print("Scraped Reviews:", reviews)
         if not reviews:
             return jsonify({"error": "No reviews scraped", "reviews": []}), 200
