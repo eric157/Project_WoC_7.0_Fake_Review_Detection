@@ -1,0 +1,15 @@
+Flask
+flask-cors
+pandas
+joblib
+beautifulsoup4
+nltk
+contractions
+autocorrect
+langdetect
+selenium
+webdriver-manager
+numpy
+scikit-learn
+logging
+click==8.0.4
