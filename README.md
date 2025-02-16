@@ -1,124 +1,113 @@
-# 🛡️ Review Sentinel  
+# 🛡️ Review Sentinel
 
-<<<<<<< HEAD
 A robust and user-friendly pipeline for identifying fake reviews using Natural Language Processing (NLP) and Machine Learning (ML).
 
 ---
 
 ## 🎬 Execution Video
 
-[![Execution Video](assets/execution_thumbnail.png)](https://www.youtube.com/watch?v=Ozqh9fH66tE)
-=======
-A robust and user-friendly pipeline for identifying fake reviews using Natural Language Processing (NLP) and Machine Learning (ML).  
->>>>>>> fb57d89adc819af52ce1239d6115ccd4cfe51e12
+[![Watch the Execution Video](https://img.shields.io/badge/Execution%20Video-Click%20Here-blue?style=for-the-badge)](https://youtu.be/Ozqh9fH66tE)
+
 
 ---
 
-## 🎬 Execution Video  
+## ✨ Features
 
-<<<<<<< HEAD
-- **Advanced Text Preprocessing:**  
-  Contraction expansion, noise removal, text normalization, HTML & JavaScript handling, spelling correction, language filtering, and more.
-  
-- **Sophisticated Feature Extraction:**  
-  TF-IDF vectorization with customizable n-grams, feature limits, and frequency thresholds.
-  
-- **Robust Model Training:**  
-  Logistic Regression model enhanced with Bayesian hyperparameter tuning and evaluated using metrics like accuracy, precision, recall, and F1-score.
-  
-- **Dynamic Web Scraping:**  
-  Automated Amazon review scraping using Selenium and BeautifulSoup with headless browser support and cookie-based authentication.
-  
-- **Interactive Web Interface:**  
-  A Flask-based backend paired with a modern dark-themed UI for real-time prediction display.
+### Advanced Text Preprocessing
+- Contraction Expansion: Converts contractions (e.g., "can't" to "cannot") for text clarity.
+- Noise Removal: Eliminates punctuation, digits, and stopwords for cleaner text.
+- Text Normalization: Converts text to lowercase and applies lemmatization for consistency.
+- HTML & JavaScript Handling: Strips out HTML tags and JavaScript code from reviews.
+- URL, Email, Hashtag Removal: Cleans text from unnecessary web and social media elements.
+- Spelling Correction: Corrects misspellings for improved text accuracy.
+- Non-ASCII Character Handling: Standardizes text to ensure character encoding consistency.
+- Language Detection & Filtering: Automatically removes non-English reviews.
+- Short Text & Noise Handling: Filters out very short and non-informative text snippets.
+
+### Sophisticated Feature Extraction
+- TF-IDF Vectorization: Converts processed text into numerical vectors.
+- Customizable N-grams: Captures different text contexts using unigrams, bigrams, and more.
+- Feature Limits: Optimizes model performance by controlling the number of features.
+- Frequency Thresholds: Filters out extremely rare or overly common terms.
+
+### Robust Model Training
+- Logistic Regression Model: Employs an efficient model for binary classification (Real/Fake review detection).
+- Bayesian Hyperparameter Tuning: Optimizes model parameters for peak performance.
+- Comprehensive Evaluation Metrics: Uses Accuracy, Precision, Recall, and F1-Score to assess effectiveness.
+
+### Dynamic Web Scraping
+- Amazon Review Scraping: Automatically collects reviews from Amazon product pages.
+- User-Defined Review Count: Allows users to specify the number of reviews to scrape.
+- Data Storage: Saves scraped reviews in structured CSV files.
+- Cookie-Based Login: Implements cookie-based authentication to bypass login prompts.
+- Headless Browser: Utilizes Selenium for efficient, background scraping.
+
+### Enhanced Web Interface & Real-Time Inference
+- Flask API: Serves as the backend for model inference.
+- Modern, Aesthetic UI: Features a dark-themed interface with tabbed navigation.
+- Interactive Metric Boxes: Displays prediction results and summary metrics.
+- Inference Time Tracking: Accurately calculates and displays the total inference time.
 
 ---
 
-## 📦 Checkpoints Overview
+## 📁 Folder Structure
+
+```
+Project_WoC_7.0_Fake_Review_Detection/
+├── checkpoint 1/
+│   ├── preprocessing.ipynb   # Preprocessing and feature extraction notebook
+│   ├── data/                 # Raw review datasets (CSV files)
+│   ├── output/               # Processed datasets (CSV files)
+│   ├── models/               # TF-IDF vectorizer and feature names (pkl files)
+├── checkpoint 2/
+│   ├── model_training.ipynb  # Model training and evaluation notebook
+│   ├── models/               # Trained model files (pkl files)
+│   ├── output/               # Model evaluation results
+├── checkpoint 3/
+│   ├── scraping.ipynb        # Amazon review scraping notebook
+│   ├── amazon_cookies.pkl    # File to store cookies for Amazon login (not tracked by Git)
+│   ├── scraped_reviews.csv   # CSV file to store scraped reviews
+├── checkpoint 4/
+│   ├── app.py                # Flask backend application
+│   ├── frontend/             # Directory for web interface files
+│   │   ├── index.html        # Main webpage (HTML)
+│   │   ├── script.js         # Frontend logic (JavaScript)
+│   │   ├── style.css         # Frontend styling (CSS)
+│   ├── prediction.ipynb      # Model inference demo notebook
+├── README.md                 # Project documentation
+├── .gitignore                # Specifies intentionally untracked files (e.g., amazon_cookies.pkl)
+└── requirements.txt          # Project dependencies
+```
+
+---
+
+## 📦 Checkpoints Deep Dive
 
 ### Checkpoint 1: Preprocessing & Feature Extraction
-- Loads raw review data, cleans text through advanced preprocessing techniques, and converts it into numerical vectors using TF-IDF.
-- Outputs are saved for subsequent model training.
+- Loads raw review datasets.
+- Applies advanced text preprocessing (contraction expansion, noise removal, normalization, etc.).
+- Converts text data into numerical vectors using TF-IDF.
+- Saves processed data and TF-IDF models for future training.
 
 ### Checkpoint 2: Model Training & Evaluation
+- Loads TF-IDF transformed text from Checkpoint 1.
 - Trains a Logistic Regression model with Bayesian hyperparameter tuning.
-- Evaluates the model using accuracy, precision, recall, and F1-score, saving the best-performing model.
+- Evaluates model performance using Accuracy, Precision, Recall, and F1-Score.
+- Stores the best-performing model for future predictions.
 
-### Checkpoint 3: Web Scraping
-- Automates the extraction of Amazon reviews with Selenium & BeautifulSoup.
-- Handles dynamic content via headless browsing and cookie-based login.
-- Stores scraped reviews in CSV format.
+### Checkpoint 3: Web Scraping Module
+- Uses Selenium and BeautifulSoup to scrape Amazon product reviews.
+- Handles dynamic content, cookie-based authentication, and headless browsing.
+- Saves scraped reviews in structured CSV format for analysis.
 
-### Checkpoint 4: Web App & Prediction
-- Provides a Flask API for real-time review analysis.
-- Features an intuitive, dark-themed UI with interactive metric boxes to display predictions.
-=======
-Click the link below to watch the execution video directly from this repository:  
-
-▶ **[Watch Execution Video](assets/execution.mp4)** 
-
-## ✨ Features  
-### 🔹 Advanced Text Preprocessing  
-- **Contraction Expansion**  
-- **Noise Removal**  
-- **Text Normalization**  
-- **HTML & JavaScript Handling**  
-- **Spelling Correction**  
-- **Language Detection & Filtering**  
-
-### 🔹 Sophisticated Feature Extraction  
-- **TF-IDF Vectorization**  
-- **Customizable N-grams**  
-- **Feature Limits & Frequency Thresholds**  
-
-### 🔹 Robust Model Training  
-- **Logistic Regression Model**  
-- **Bayesian Hyperparameter Tuning**  
-- **Performance Metrics (Accuracy, Precision, Recall, F1-Score)**  
-
-### 🔹 Dynamic Web Scraping  
-- **Amazon Review Scraping**  
-- **Headless Browser Support**  
-- **Cookie-Based Login**  
-
-### 🔹 Web Interface & Real-Time Inference  
-- **Flask Backend**  
-- **Modern UI with Dark Theme**  
-- **Interactive Prediction Results**  
+### Checkpoint 4: Prediction & Web App
+- Implements a Flask API for real-time model inference.
+- Features an interactive, dark-themed web interface.
+- Displays prediction results with engaging metric boxes.
+- Tracks and displays the total time taken for inference.
 
 ---
 
-## 📦 Checkpoints Deep Dive  
+## 🌟 Acknowledgements
 
-### 📌 **Checkpoint 1: Preprocessing & Feature Extraction**  
-- Loads raw review datasets.  
-- Cleans text and applies NLP preprocessing.  
-- Converts text into numerical vectors using TF-IDF.  
-- Saves processed data for training.  
-
-### 📌 **Checkpoint 2: Model Training & Evaluation**  
-- Loads processed text features.  
-- Trains Logistic Regression with Bayesian tuning.  
-- Evaluates performance using accuracy, precision, recall, and F1-score.  
-- Stores the best-performing model.  
-
-### 📌 **Checkpoint 3: Web Scraping**  
-- Uses Selenium & BeautifulSoup for Amazon review scraping.  
-- Handles dynamic content and login authentication.  
-- Saves scraped reviews in a structured format.  
-
-### 📌 **Checkpoint 4: Web App & Prediction**  
-- Flask API for real-time review analysis.  
-- Interactive frontend with a modern dark theme.  
-- Displays predictions with user-friendly metric boxes.  
->>>>>>> fb57d89adc819af52ce1239d6115ccd4cfe51e12
-
----
-
-## 🌟 Acknowledgements  
-
-<<<<<<< HEAD
-This project is developed as part of **WoC 7.0**, showcasing an end-to-end fake review detection pipeline. Special thanks to our mentors and contributors for their invaluable guidance and support throughout the project development.
-=======
-This project is developed as part of **WoC 7.0**, showcasing an end-to-end fake review detection pipeline. Special thanks to mentors for their invaluable guidance, support, and feedback throughout the project development.  
->>>>>>> fb57d89adc819af52ce1239d6115ccd4cfe51e12
+Developed as part of **WoC 7.0**. Special thanks to the mentors for their guidance and support.
