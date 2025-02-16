@@ -3,25 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Review Detector</title>
+    <title>Fake Review Detector - Project WoC 7.0</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto+Condensed:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"> <!-- Even Crazier Fonts! -->
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-shield-check"></i> Fake Review Detector</h1>
-            <p class="tagline">Analyze Amazon product reviews for authenticity.</p>
+            <h1><i class="fas fa-shield-check"></i> <span class="header-title-main">Review</span> <span class="header-title-sub">Sentinel</span></h1> <!-- Split Title for Styling -->
+            <p class="tagline">Analyze Amazon product reviews for authenticity.</p> <!-- Reverted Tagline -->
         </header>
-        <section class="input-area">
-            <input type="text" id="productUrl" placeholder="Enter Amazon Product URL">
-            <input type="number" id="numReviews" placeholder="Number of Reviews" value="50" min="1" step="1">
-            <button onclick="analyzeReviews()">Analyze <i class="fas fa-search"></i></button>
+
+        <section class="feature-tabs">
+            <nav class="tabs-nav">
+                <button class="tab-button active" onclick="openTab('amazon-analyzer')">Amazon <span class="tab-button-sub">Analyzer</span></button> <!-- Sub-text in Tabs -->
+                <button class="tab-button" onclick="openTab('manual-analyzer')">Single Review <span class="tab-button-sub">Scan</span></button>
+            </nav>
+
+            <div id="amazon-analyzer" class="tab-content active-content">
+                <section class="input-area">
+                    <h2><i class="fas fa-amazon"></i> Amazon Review Insights</h2>
+                    <input type="text" id="productUrl" placeholder="Enter Amazon Product URL">
+                    <input type="number" id="numReviews" placeholder="Number of Reviews (Max 100)" value="50" min="1" step="1">
+                    <button onclick="analyzeReviews()"> <i class="fas fa-rocket"></i> Initiate Scan</button> <!-- More Dynamic Button Icon/Text -->
+                </section>
+            </div>
+
+            <div id="manual-analyzer" class="tab-content">
+                <section class="manual-input-area">
+                    <h2><i class="fas fa-pen-fancy"></i> Craft Your Review Analysis</h2> <!-- Evocative Manual Title -->
+                    <div class="input-card">
+                        <div class="input-group">
+                            <label for="reviewText"><i class="fas fa-scroll"></i> Review Text</label> <!-- Icon Labels -->
+                            <textarea id="reviewText" placeholder="Paste review text here"></textarea>
+                        </div>
+                        <div class="input-group rating-group">
+                            <label for="manualRating"><i class="fas fa-star-half-alt"></i> Rating (1-5)</label>
+                            <input type="number" id="manualRating" placeholder="Enter rating" min="1" max="5">
+                        </div>
+                        <button onclick="predictManualReview()" class="predict-button"> <i class="fas fa-magic"></i> Analyze This Review</button> <!-- Even More Dynamic Button -->
+                    </div>
+                    <div id="manual-prediction-result" class="prediction-result" style="display:none;">
+                        <h3><i class="fas fa-chart-bar"></i> <span class="result-heading-text">Deep Dive Result:</span></h3> <!-- More visible heading -->
+                        <div class="prediction-metrics"> <!-- NEW: Prediction Metrics Container -->
+                            <div class="metric-box manual-prediction-box"> <!-- Metric Box for Prediction -->
+                                <i class="fas fa-microchip prediction-icon"></i> <!-- Prediction Icon -->
+                                <span id="manual-prediction-text">--</span>
+                                <label>AI Prediction</label>
+                            </div>
+                            <div class="metric-box manual-confidence-box"> <!-- Metric Box for Confidence -->
+                                <i class="fas fa-tachometer-alt confidence-icon"></i> <!-- Confidence Icon -->
+                                <span id="manual-prediction-probability">--</span>
+                                <label>Confidence Score</label> <!-- Updated Label -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </section>
+
+
         <section id="results" class="results-area">
             <div id="summary" class="summary-area" style="display:none;">
-                <h2>Analysis Summary</h2>
+                <h2><i class="fas fa-chart-pie"></i> Executive Summary</h2> <!-- Executive Summary Title -->
                 <div class="summary-metrics">
                     <div class="metric-box">
                         <i class="fas fa-star rating-icon"></i>
@@ -31,17 +76,17 @@
                     <div class="metric-box">
                         <i class="fas fa-percentage fake-icon"></i>
                         <span id="fakePercentage">--</span>
-                        <label>Fake Review Percentage</label>
+                        <label>Fake %</label> <!-- Shortened Label -->
                     </div>
                     <div class="metric-box">
                          <i class="fas fa-stopwatch time-icon"></i>
                          <span id="inferenceTime">--</span>
-                         <label>Inference Time</label>
+                         <label>Time (s)</label> <!-- Shortened Label -->
                      </div>
                     <div class="metric-box">
                         <i class="fas fa-list-ol count-icon"></i>
                         <span id="reviewCount">--</span>
-                        <label>Reviews Analyzed</label>
+                        <label>Reviews</label> <!-- Shortened Label -->
                     </div>
                 </div>
             </div>
@@ -51,7 +96,7 @@
         </section>
         <footer>
             <div class="footer-content">
-                <p>© 2025 Fake Review Detector</p>
+                <p>© 2025 <span class="footer-brand">Review Sentinel</span> - Project WoC 7.0</p> <!-- Branded Footer -->
                 <a href="https://github.com/eric157/Project_WoC_7.0_Fake_Review_Detection" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-github"></i> GitHub Repository
                 </a>

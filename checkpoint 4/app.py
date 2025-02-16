@@ -1,7 +1,5 @@
 import os
-# Suppress TensorFlow/TFLite logging if used internally by the model
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-# Suppress webdriver-manager logging
 os.environ['WDM_LOG_LEVEL'] = '0'
 
 import pandas as pd
@@ -30,14 +28,8 @@ import pickle
 import logging
 import numpy as np
 
-# --- Fix for Flask/Click Import Error ---
-# pip uninstall click
-# pip install click==8.0.4
-
-# --- Logging Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# --- NLTK Downloads ---
 for package in ['punkt', 'wordnet', 'stopwords', 'omw-1.4']:
     try:
         nltk.data.find(f'tokenizers/{package}' if package == 'punkt' else f'corpora/{package}')
@@ -47,19 +39,15 @@ for package in ['punkt', 'wordnet', 'stopwords', 'omw-1.4']:
 DetectorFactory.seed = 0
 spell = Speller(lang='en')
 
-# --- Flask App Initialization ---
-# Serve static files from the 'frontend' folder at the root URL.
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 CORS(app)
 
-# --- Paths ---
 MODEL_DIR = os.path.join("..", "checkpoint 2", "models")
 MODEL_PATH = os.path.join(MODEL_DIR, "logistic_regression_model.pkl")
 VECTORIZER_PATH = os.path.join("..", "checkpoint 1", "models", "tfidf_vectorizer.pkl")
 FEATURE_NAMES_PATH = os.path.join("..", "checkpoint 1", "models", "tfidf_feature_names.pkl")
 COOKIES_FILE_PATH = os.path.join("..", "checkpoint 3", "amazon_cookies.pkl")
 
-# --- Load Model and Vectorizer ---
 def load_model():
     if not os.path.exists(MODEL_PATH):
         raise FileNotFoundError(f"Model file not found: {MODEL_PATH}. Please train model first.")
@@ -85,7 +73,6 @@ except FileNotFoundError as e:
     vectorizer = None
     feature_names = None
 
-# --- Preprocessing Functions ---
 def preprocess_text(text):
     if not text:
         return ""
@@ -122,23 +109,21 @@ def preprocess_new_text(text, rating):
     tfidf_features = tfidf_features.reindex(columns=feature_names.tolist() + ['rating'], fill_value=0)
     return tfidf_features
 
-# --- Scraping Functions ---
 def is_amazon_url(url):
     """Checks if a URL is a valid amazon.com product URL."""
     amazon_pattern = r"(https?://)?(www\.)?amazon\.com/.*"
     return bool(re.match(amazon_pattern, url))
 
-def scrape_amazon_reviews(product_url, max_reviews=50):
+def scrape_amazon_reviews(product_url, max_reviews): # Removed max_reviews=50 default
     logging.info(f"Starting scrape_amazon_reviews for URL: {product_url}, max_reviews: {max_reviews}")
     if not is_amazon_url(product_url):
         raise ValueError("Invalid amazon.com product URL.")
-    
+
     scraped_reviews = []
     review_count = 0
     page_number = 1
     cookies_file_path = COOKIES_FILE_PATH
 
-    # --- Chrome options for headless mode ---
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-gpu")
@@ -149,13 +134,11 @@ def scrape_amazon_reviews(product_url, max_reviews=50):
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.add_argument("--enable-unsafe-swiftshader")
     chrome_options.add_argument("--log-level=3")
-    # Suppress "DevTools listening on" and other chrome logs.
     chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     chrome_options.add_argument(f"user-agent={user_agent}")
     logging.info(f"Setting User-Agent: {user_agent}")
 
-    # Create driver with logs redirected to os.devnull.
     driver_headless = webdriver.Chrome(
         service=Service(ChromeDriverManager().install(), log_path=os.devnull),
         options=chrome_options
@@ -175,7 +158,7 @@ def scrape_amazon_reviews(product_url, max_reviews=50):
             logging.warning(f"Cookies file not found at: {cookies_file_path}, proceeding with login.")
         except Exception as cookie_e:
             logging.warning(f"Error loading cookies, proceeding with login. {cookie_e}")
-        
+
         if not os.path.exists(cookies_file_path) or 'cookie_e' in locals():
             logging.info("Performing login as cookies were not loaded or not found.")
             driver_login = webdriver.Chrome(
@@ -245,7 +228,7 @@ def scrape_amazon_reviews(product_url, max_reviews=50):
             finally:
                 driver_login.quit()
                 logging.info("Login driver quitted after login process.")
-        
+
         try:
             logging.info("Attempting to find 'see all reviews' link")
             see_all_link_element = WebDriverWait(driver_headless, 20).until(
@@ -296,7 +279,7 @@ def scrape_amazon_reviews(product_url, max_reviews=50):
                         logging.warning("Skipping review due to missing text or rating elements.")
                 except Exception as inner_e:
                     logging.error(f"Error parsing review: {inner_e}")
-            
+
             if review_count >= max_reviews:
                 break
 
@@ -321,25 +304,85 @@ def scrape_amazon_reviews(product_url, max_reviews=50):
     finally:
         driver_headless.quit()
         logging.info("Driver quitted after scraping.")
-    
+
     logging.info(f"scrape_amazon_reviews finished. Scraped {len(scraped_reviews)} reviews.")
     return scraped_reviews
+
+def predict_review(review_text, rating):
+    if model is None or vectorizer is None or feature_names is None:
+        raise Exception("Model or vectorizer not loaded. Please check server configuration.")
+    try:
+        processed_features = preprocess_new_text(review_text, rating)
+        if processed_features.empty:
+            prediction_text = "Language Error/Prediction Failed"
+            probability = None
+        else:
+            prediction = model.predict(processed_features)[0]
+            probability = model.predict_proba(processed_features)[0]
+            if prediction == 1.0:
+                prediction_text = "Real"
+                probability = probability[1]
+            elif prediction == 0.0:
+                prediction_text = "Fake"
+                probability = probability[0]
+            else:
+                prediction_text = "Language Error/Prediction Failed"
+                probability = None
+        return prediction_text, probability
+    except Exception as e:
+        logging.error(f"Prediction error: {e}")
+        raise Exception(f"Prediction error: {e}")
+
+# --- API Endpoint for manual review prediction ---
+@app.route('/predict_manual_review', methods=['POST'])
+def predict_manual_review_api():
+    review_text = request.json.get('review_text')
+    rating = request.json.get('rating')
+
+    if not review_text:
+        return jsonify({"error": "Review text is required"}), 400
+    if rating is None:
+        return jsonify({"error": "Rating is required"}), 400
+
+    try:
+        prediction_text, probability = predict_review(review_text, rating)
+        return jsonify({
+            "review": review_text,
+            "rating": rating,
+            "prediction": prediction_text,
+            "probability": str(probability) if probability is not None else None
+        }), 200
+    except Exception as e:
+        logging.error(f"Manual review prediction error: {e}")
+        return jsonify({
+            "error": "Error predicting review",
+            "details": str(e)
+        }), 500
+
 
 # --- API Endpoint ---
 @app.route('/scrape_and_predict', methods=['POST'])
 def scrape_and_predict():
     product_url = request.json.get('product_url')
-    max_reviews = request.json.get('max_reviews', 50)
+    max_reviews_str = request.json.get('max_reviews') # Get max_reviews as string
     if not product_url:
         return jsonify({"error": "Product URL is required"}), 400
     if model is None or vectorizer is None or feature_names is None:
         return jsonify({"error": "Model or vectorizer not loaded. Please check server configuration."}), 500
+
     try:
-        reviews = scrape_amazon_reviews(product_url, max_reviews=max_reviews)
+        max_reviews = int(max_reviews_str) if max_reviews_str else 50 # Default to 50 if not provided or invalid
+        if max_reviews <= 0:
+            max_reviews = 50 # Ensure a positive value
+    except ValueError:
+        max_reviews = 50 # Default to 50 if parsing fails
+
+    try:
+        reviews = scrape_amazon_reviews(product_url, max_reviews=max_reviews) # Use user-defined max_reviews
         logging.info(f"Scraped Reviews: {reviews}")
         if not reviews:
             return jsonify({"error": "No reviews scraped", "reviews": []}), 200
-        
+
         predictions = []
         fake_count = 0
         start_time = time.time()
@@ -394,7 +437,6 @@ def scrape_and_predict():
             "details": str(e)
         }), 500
 
-# --- Home Route ---
 @app.route('/')
 def home():
     return app.send_static_file('index.html')
