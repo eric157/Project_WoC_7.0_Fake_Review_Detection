@@ -2,10 +2,6 @@
 
 A robust and user-friendly pipeline for identifying fake reviews using Natural Language Processing (NLP) and Machine Learning (ML).
 
----
-
-## 🎬 Execution Video
-
 [![Watch the Execution Video](https://img.shields.io/badge/Execution%20Video-Click%20Here-blue?style=for-the-badge)](https://youtu.be/Ozqh9fH66tE)
 
 
@@ -75,8 +71,7 @@ Project_WoC_7.0_Fake_Review_Detection/
 │   │   ├── style.css         # Frontend styling (CSS)
 │   ├── prediction.ipynb      # Model inference demo notebook
 ├── README.md                 # Project documentation
-├── .gitignore                # Specifies intentionally untracked files (e.g., amazon_cookies.pkl)
-└── requirements.txt          # Project dependencies
+├── .gitignore                # Specifies intentionally untracked files
 ```
 
 ---
